@@ -1,22 +1,27 @@
 ﻿using System;
- 
+using System.Globalization;
+
 namespace Resolver
 {
-    class Program
+    internal static class Program
     {
-        static void Main(string[] args)
+        private static void Main()
         {
             // Ввод данных уравнения - значения a, b и c
             // После ввода данных мы обрезаем лишние пробелы по краям методом Trim()
-            // и преобразовываем тип string во float
+            // и преобразовываем тип string во double
             Console.Write("Введите значение a = ");
-            float a = float.Parse(Console.ReadLine().Trim());
+            var a = double.Parse(Console.ReadLine()?.Trim() ?? "0");
+
             Console.Write("Введите значение b = ");
-            float b = float.Parse(Console.ReadLine().Trim());
+            var b = double.Parse(Console.ReadLine()?.Trim() ?? "0");
+
             Console.Write("Введите значение c = ");
-            float c = float.Parse(Console.ReadLine().Trim());
+            var c = double.Parse(Console.ReadLine()?.Trim() ?? "0");
+
             // Вычисление дискриминанта
-            float d = b * b - 4 * a * c;
+            var d = b * b - 4 * a * c;
+
             // При дискриминанте меньшим 0 - выводим ошибку
             if (d < 0)
             {
@@ -25,23 +30,29 @@ namespace Resolver
             else
             {
                 // Объявляем корни уравнения
-                float x1, x2;
-                // При дискриминанте равным 0 оба корня равны
-                if (d == 0)
-                {
-                    x1 = x2 = -(b / 2 * a);
-                }
-                else
+                double x1, x2;
+
+                if (d > 0)
                 {
                     // Извлекаем корень из дискриминанта
-                    float sqrtD = (float)System.Math.Sqrt(d);
+                    var sqrtD = Math.Sqrt(d);
+
                     // Высчитываем корни уравнения
                     x1 = (-b + sqrtD) / (2 * a);
                     x2 = (-b - sqrtD) / (2 * a);
                 }
+                else
+                {
+                    // При дискриминанте равным 0 оба корня равны
+                    x1 = x2 = (b / 2 * a);
+                }
+
                 // Выводим результат
-                Console.WriteLine("d = " + d.ToString() + " x1 = " + x1.ToString() + " x2 = " + x2.ToString());
+                Console.WriteLine("d = " + d.ToString(CultureInfo.InvariantCulture) + " x1 = " +
+                                  x1.ToString(CultureInfo.InvariantCulture) + " x2 = " +
+                                  x2.ToString(CultureInfo.InvariantCulture));
             }
+
             // Ждем нажатия клавиши, чтобы завершить выполнение программы
             Console.ReadLine();
         }
